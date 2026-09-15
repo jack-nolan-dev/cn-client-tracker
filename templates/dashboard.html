@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+  <h1>Client Dashboard</h1>
+  <p>{{ clients|length }} client{{ 's' if clients|length != 1 else '' }} tracked</p>
+</div>
+
+{% if clients %}
+<div class="stats-bar">
+  {% set statuses = ['Discovery', 'In Progress', 'Live', 'Paused'] %}
+  {% for s in statuses %}
+    <div class="stat">
+      <span class="stat-count">{{ clients|selectattr('status', 'equalto', s)|list|length }}</span>
+      <span class="stat-label">{{ s }}</span>
+    </div>
+  {% endfor %}
+</div>
+
+<table class="client-table">
+  <thead>
+    <tr>
+      <th>Client</th>
+      <th>Type</th>
+      <th>Site</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for client in clients %}
+    <tr>
+      <td><a href="/client/{{ client.id }}">{{ client.name }}</a></td>
+      <td>{{ client.business_type or '—' }}</td>
+      <td>
+        {% if client.site_url %}
+          <a href="{{ client.site_url }}" target="_blank">View site</a>
+        {% else %}—{% endif %}
+      </td>
+      <td><span class="badge badge-{{ client.status|lower|replace(' ', '-') }}">{{ client.status }}</span></td>
+      <td><a href="/client/{{ client.id }}/edit">Edit</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% else %}
+<div class="empty-state">
+  <p>No clients yet.</p>
+  <a href="/add" class="btn btn-primary">Add your first client</a>
+</div>
+{% endif %}
+
+{% endblock %}

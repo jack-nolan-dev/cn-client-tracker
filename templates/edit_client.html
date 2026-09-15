@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <a href="/client/{{ client.id }}" class="back-link">← {{ client.name }}</a>
+    <h1>Edit Client</h1>
+  </div>
+</div>
+
+<form method="POST" class="client-form">
+  <label>Client Name *
+    <input type="text" name="name" value="{{ client.name }}" required />
+  </label>
+  <label>Business Type
+    <input type="text" name="business_type" value="{{ client.business_type or '' }}" />
+  </label>
+  <label>Site URL
+    <input type="url" name="site_url" value="{{ client.site_url or '' }}" />
+  </label>
+  <label>Status
+    <select name="status">
+      {% for s in ['Discovery', 'In Progress', 'Live', 'Paused'] %}
+        <option value="{{ s }}" {% if client.status == s %}selected{% endif %}>{{ s }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label>Notes
+    <textarea name="notes" rows="4">{{ client.notes or '' }}</textarea>
+  </label>
+  <div class="form-actions">
+    <a href="/client/{{ client.id }}" class="btn btn-secondary">Cancel</a>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+  </div>
+</form>
+
+{% endblock %}

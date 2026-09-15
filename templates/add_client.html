@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+  <h1>Add Client</h1>
+</div>
+
+<form method="POST" class="client-form">
+  <label>Client Name *
+    <input type="text" name="name" required />
+  </label>
+  <label>Business Type
+    <input type="text" name="business_type" placeholder="e.g. Restaurant, Retail, Fitness" />
+  </label>
+  <label>Site URL
+    <input type="url" name="site_url" placeholder="https://..." />
+  </label>
+  <label>Status
+    <select name="status">
+      <option value="Discovery">Discovery</option>
+      <option value="In Progress">In Progress</option>
+      <option value="Live">Live</option>
+      <option value="Paused">Paused</option>
+    </select>
+  </label>
+  <label>Notes
+    <textarea name="notes" rows="4" placeholder="Anything worth tracking..."></textarea>
+  </label>
+  <div class="form-actions">
+    <a href="/" class="btn btn-secondary">Cancel</a>
+    <button type="submit" class="btn btn-primary">Add Client</button>
+  </div>
+</form>
+
+{% endblock %}
