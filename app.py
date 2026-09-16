@@ -25,7 +25,22 @@ def init_db():
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
+        # Seed demo data if table is empty
+        count = conn.execute("SELECT COUNT(*) FROM clients").fetchone()[0]
+        if count == 0:
+            seed = [
+                ("Maple Street Bakery", "Bakery", "", "Discovery", "Interested in a landing page + online order form"),
+                ("North End Auto", "Auto Repair", "northendauto.com", "In Progress", "Rebuilding their outdated site — new quote request form"),
+                ("Harborview Yoga", "Fitness Studio", "harborviewyoga.com", "Live", "Launched Sep 2026. Monthly retainer for updates."),
+                ("Green Thumb Landscaping", "Landscaping", "", "Proposal Sent", "Sent 3-page proposal on 9/10. Follow up this week."),
+            ]
+            conn.executemany(
+                "INSERT INTO clients (name, business_type, site_url, status, notes) VALUES (?, ?, ?, ?, ?)",
+                seed,
+            )
 
+
+init_db()
 
 # ── Routes ────────────────────────────────────────────────
 
@@ -99,5 +114,4 @@ def delete_client(client_id):
 # ── Run ───────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    init_db()
     app.run(debug=True)
